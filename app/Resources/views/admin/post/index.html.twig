@@ -4,8 +4,6 @@
     <div class="container">
         <div class="row">
             <div class="col-sm12">
-                <a href="{{ path("admin_post_add") }}"><span class="glyphicon glyphicon-plus">Plus</span></a>
-                <a href="{{ path("admin_logout") }}"><span class="glyphicon glyphicon-plus">Logout</span></a>
                 <div class="responsive-table">
                     <table>
                         <thead>
@@ -29,7 +27,6 @@
                                 <td>
                                     <a href="{{ path('admin_post_edit', {'id': post.getId()}) }}"><span
                                                 class="glyphicon glyphicon-pencil">Edit</span></a>
-                                    {#<a href="{{ path("admin_post_set_active") }}"><span class="glyphicon glyphicon-remove">Trash</span></a>#}
                                 </td>
                             </tr>
                         {% endfor %}
