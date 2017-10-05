@@ -53,6 +53,10 @@ class BlogController extends Controller
 
         $post =  $this->getDoctrine()->getRepository(Post::class)->findOneBy(["url"=>$slug]);
 
+        if (!$post) {
+            return $this->redirectToRoute('homepage');
+        }
+
         $event = new PostWasDisplayedEvent($post);
         $dispatcher = $this->get('event_dispatcher');
         $dispatcher->dispatch(PostWasDisplayedEvent::NAME, $event);
