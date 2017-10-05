@@ -16,7 +16,7 @@ class BlogController extends Controller
 {
 
     /**
-     * @Route("/homepage", name="homepage")
+     * @Route("/", name="homepage")
      */
     public function homepageAction()
     {
@@ -25,7 +25,7 @@ class BlogController extends Controller
         );
     }
     /**
-     * @Route("/list/{page}", name="list",requirements={"page": "\d+"})
+     * @Route("/{page}", name="list",requirements={"page": "\d+"})
      */
     public function indexAction($page = 1)
     {
@@ -46,7 +46,7 @@ class BlogController extends Controller
         );
     }
     /**
-     * @Route("/post/{slug}", name="detail")
+     * @Route("/{slug}", name="detail")
      */
     public function showAction($slug){
 

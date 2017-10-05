@@ -1,6 +1,9 @@
 {% extends 'layout.twig' %}
 
 {% block body %}
+    {% set currentPath = path(app.request.attributes.get('_route'),
+    app.request.attributes.get('_route_params')) %}
+
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Homepage</a></li>
         <li class="breadcrumb-item active">Welcome to our Blog</li>
@@ -9,7 +12,7 @@
         <div class="container">
             <h1 class="display-3">Welcome to our Blog!</h1>
             <p>This is a Blog application written in Symfony 3 with a <a href="https://dev.mysql.com/" target="_blank">MySQL Database</a> and using <a href="http://php.net/" target="_blank">PHP 7.1.</a> We hope you will like our work :-)</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Read our Posts »</a></p>
+            <p><a class="btn btn-primary btn-lg" href="{{ currentPath }}1" role="button">Read our Posts »</a></p>
         </div>
     </div>
 
