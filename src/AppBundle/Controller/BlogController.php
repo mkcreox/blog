@@ -30,7 +30,6 @@ class BlogController extends Controller
      */
     public function indexAction($page = 1)
     {
-
         $paginator  = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate($this->getDoctrine()->getRepository(Post::class)->getPostsQuery(),$page,2);
@@ -47,7 +46,7 @@ class BlogController extends Controller
      */
     public function showAction($slug){
 
-        $post =  $this->getDoctrine()->getRepository(Post::class)->findOneBy(["url"=>$slug]);
+        $post =  $this->getDoctrine()->getRepository(Post::class)->findOneBy(["url"=>$slug,"isActive"=>1]);
 
         if (!$post) {
             return $this->redirectToRoute('homepage');
