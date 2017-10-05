@@ -74,7 +74,7 @@ class PostForm extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'attr' => [
-                    'class' => 'btn btn-success',
+                    'class' => 'btn btn-success pull-right',
                     'style' => 'margin-top: 20px'
                 ]
             ]);
