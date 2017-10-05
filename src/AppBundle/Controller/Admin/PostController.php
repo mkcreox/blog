@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Admin;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\Tag;
 use AppBundle\Form\PostForm;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +45,7 @@ class PostController extends Controller
 //                $em->flush();
 //            }
 
-            $tag = $em->getRepository('AppBundle:Tag')->find(1);
+            $tag = $em->getRepository(Tag::class)->find(1);
             $post->addTag($tag);
             $em->persist($tag);
             $em->persist($post);
@@ -61,31 +62,27 @@ class PostController extends Controller
     /**
      * @Route("/admin/post/edit/{id}", name="admin_post_edit", requirements={"id": "\d+"})
      */
-    public function editAction($id = 1)
+    public function editAction($id = 1, Request $request)
     {
         $post = $this->getDoctrine()
             ->getRepository(Post::class)
             ->find($id);
 
         $form = $this->createForm(PostForm::class, $post);
-var_dump($post->getTags());exit;
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-//            foreach ($request->request->get('post_form')['tags'] as $tagId) {
-//                $tag = $em->getRepository('AppBundle:Tag')->find($tagId);
-//                $post->addTag($tag);
-//                $em->persist($tag);
-//                $em->persist($post);
-//                $em->flush();
-//            }
-            $em->persist($post);
-            $em->flush();
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($post);
+                $em->flush();
+            } catch (UniqueConstraintViolationException $exception) {
+
+            }
             return $this->redirectToRoute("admin_post");
         }
 
         return $this->render('admin/post/edit.html.twig', [
-            'post' => $post,
             'form' => $form->createView()
         ]);
     }
