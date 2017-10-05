@@ -15,7 +15,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
 
     public function getPostsQuery()
     {
-        return $this->getEntityManager()->createQuery('SELECT a FROM AppBundle:Post a ORDER BY a.date DESC');
+        return $this->getEntityManager()->createQuery('SELECT a FROM AppBundle:Post a WHERE a.isActive <> 0 ORDER BY a.date DESC');
     }
 
     public function getPostsForREST()
