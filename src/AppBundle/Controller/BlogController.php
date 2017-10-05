@@ -43,7 +43,7 @@ class BlogController extends Controller
         );
     }
     /**
-     * @Route("/{slug}", name="detail")
+     * @Route("/post/{slug}", name="detail")
      */
     public function showAction($slug){
 
