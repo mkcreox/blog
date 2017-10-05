@@ -10,7 +10,7 @@
         <div class="container">
             <div class="starter-template">
                     <h1>{{ post.getTitle() }}</h1>
-                    <small class="pull-right">Views: XXX | Created at: {{ post.getDate()|date("d.m.Y") }}</small> |
+                    <small class="pull-right">Views: {{ post.views }} | Created at: {{ post.getDate()|date("d.m.Y") }}</small> |
                         {% for tag in post.getTags() %}
                             <span class="badge badge-secondary">#{{ tag.getTitle() }}</span>
                         {% endfor %}

@@ -23,7 +23,7 @@ class BlogController extends FOSRestController
         $restresult = $this->getDoctrine()->getRepository(Post::class)->getPostsForREST();
 
         if ($restresult === null) {
-            return new View("there are no users", Response::HTTP_NOT_FOUND);
+            return new View("there are no posts", Response::HTTP_NOT_FOUND);
         }
 
         $view = $this->view($restresult);
@@ -38,7 +38,7 @@ class BlogController extends FOSRestController
         $restresult = $this->getDoctrine()->getRepository(Post::class)->getPostForREST($id);
 
         if ($restresult === null) {
-            return new View("user not found", Response::HTTP_NOT_FOUND);
+            return new View("post not found", Response::HTTP_NOT_FOUND);
         }
 
         $event = new PostWasDisplayedEvent($this->getDoctrine()->getRepository(Post::class)->find($id));
