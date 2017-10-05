@@ -74,3 +74,9 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+# FOS
+fos_rest:
+    view:
+        formats:
+            json: true
