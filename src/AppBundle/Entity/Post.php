@@ -161,5 +161,14 @@ class Post
     {
         return $this->url;
     }
+    /**
+     * Get tags
+     *
+     * @return (targetEntity="Tag", inversedBy="posts")
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 }
 
