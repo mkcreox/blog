@@ -57,6 +57,12 @@ class Post
     private $url;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="views", type="integer", options={"default" : 0})
+     */
+    private $views;
+    /**
      * @var string
      *
      * @ORM\Column(name="is_active", type="boolean")
@@ -183,6 +189,33 @@ class Post
     }
 
     /**
+     * Get tags
+     *
+     * @return (targetEntity="Tag", inversedBy="posts")
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+    }
+
+
+    /**
      * Set isActive
      *
      * @param string $isActive
@@ -217,16 +250,6 @@ class Post
         $this->tags[] = $tag;
 
         return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return (targetEntity="Tag", inversedBy="posts")
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 }
 

@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path("homepage") }}">Homepage</a></li>
+        <li class="breadcrumb-item"><a href="#">Blog list</a></li>
+        <li class="breadcrumb-item active">{{ post.getTitle() }}</li>
+    </ol>
+    <div class="wrapper">
+        <div class="container">
+            <div class="starter-template">
+                    <h1>{{ post.getTitle() }}</h1>
+                    <small class="pull-right">Views: XXX | Created at: {{ post.getDate()|date("d.m.Y") }}</small> |
+                        {% for tag in post.getTags() %}
+                            <span class="badge badge-secondary">#{{ tag.getTitle() }}</span>
+                        {% endfor %}
+                    <hr>
+                    <p>{{ post.getText()|raw }}</p>
+                </div>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
