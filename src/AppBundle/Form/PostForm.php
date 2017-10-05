@@ -54,7 +54,7 @@ class PostForm extends AbstractType
                 'value' => 0,
                 'required' => false,
                 'attr' => [
-                    'class' => 'pull-left top-10'
+                    'class' => 'top-10-active'
                 ]
             ])
 
