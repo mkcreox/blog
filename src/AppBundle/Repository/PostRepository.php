@@ -7,6 +7,17 @@ use AppBundle\DTO\Rest\Tag;
 
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * Move all dql queries to class
+     */
+
+
+    public function getPostsQuery()
+    {
+        return $this->getEntityManager()->createQuery('SELECT a FROM AppBundle:Post a ORDER BY a.date DESC');
+    }
+
     public function getPostsForREST()
     {
         $query = $this->getEntityManager()->createQuery('SELECT NEW AppBundle\\DTO\\Rest\\SimplePost(p.id, p.title, p.date, p.url) FROM AppBundle\\Entity\\Post p');

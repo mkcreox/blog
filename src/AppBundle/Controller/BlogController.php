@@ -26,18 +26,14 @@ class BlogController extends Controller
         );
     }
     /**
-     * @Route("/{page_number}", name="list",requirements={"page_number": "\d+"})
+     * @Route("/{page}", name="list",requirements={"page": "\d+"})
      */
     public function indexAction($page = 1)
     {
 
-        $em    = $this->get('doctrine.orm.entity_manager');
-        $dql   = "SELECT a FROM AppBundle:Post a ORDER BY a.date DESC";
-        $query = $em->createQuery($dql);
-
         $paginator  = $this->get('knp_paginator');
 
-        $pagination = $paginator->paginate($query,$page,2);
+        $pagination = $paginator->paginate($this->getDoctrine()->getRepository(Post::class)->getPostsQuery(),$page,2);
 
         return $this->render('blog/list.twig',
             [
