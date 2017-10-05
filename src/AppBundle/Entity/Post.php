@@ -171,7 +171,7 @@ class Post
     /**
      * Get tags
      *
-     * @return array
+     * @return (targetEntity="Tag", inversedBy="posts")
      */
     public function getTags()
     {
@@ -193,7 +193,6 @@ class Post
     {
         $this->views = $views;
     }
-
 
 }
 

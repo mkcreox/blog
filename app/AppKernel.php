@@ -18,7 +18,8 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle()
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
@@ -31,7 +32,6 @@ class AppKernel extends Kernel
                 $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
         }
-
         return $bundles;
     }
 
