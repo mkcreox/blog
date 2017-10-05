@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,8 +44,15 @@ class Post
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts")
-     * @ORM\JoinTable(name="post_tag")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts", cascade={"persist"})
+     * @ORM\JoinTable(name="post_tag",
+     *     joinColumns={
+     *     @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+     *   }
+     * )
      */
     private $tags;
 
@@ -55,6 +63,26 @@ class Post
      */
     private $url;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Post constructor.
+     */
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+        $this->tags = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -160,6 +188,64 @@ class Post
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param string $isActive
+     *
+     * @return Post
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return string
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \AppBundle\Entity\Tag $tags
+     * @return Post
+     */
+    public function addTag(Tag $tags)
+    {
+        $tags->addPost($this);
+        $this->$tags[] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \AppBundle\Entity\Tag $tags
+     */
+    public function removeTag(Tag $tags)
+    {
+        $this->$tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }
 

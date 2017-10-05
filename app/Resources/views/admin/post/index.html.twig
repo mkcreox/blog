@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm12">
+                <a href="{{ path("admin_post_add") }}"><span class="glyphicon glyphicon-plus">Plus</span></a>
+                <div class="responsive-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>DATE</th>
+                                <th>IS ACTIVE</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <td>{{ post.id }}</td>
+                                <td>{{ post.title }}</td>
+                                <td>{{ post.date|date("m/d/Y") }}</td>
+                                <td><input type="checkbox" name="is_active" class="form-control" value="1" {{ post.isActive ? "checked" : "" }}></td>
+                                <td>
+                                    <a href="{{ path('admin_post_edit', {'id': post.id}) }}"><span class="glyphicon glyphicon-pencil">Edit</span></a>
+                                    {#<a href="{{ path("admin_post_set_active") }}"><span class="glyphicon glyphicon-remove">Trash</span></a>#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+    </script>
+{% endblock %}
