@@ -16,7 +16,7 @@ security:
                 authenticators:
                     - app.form_login_authenticator
             logout:
-                path: logout
+                path: /admin/logout
                 target: /
 
     access_control:
