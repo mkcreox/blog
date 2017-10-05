@@ -161,5 +161,15 @@ class Post
     {
         return $this->url;
     }
+
+    /**
+     * Get tags
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 }
 
