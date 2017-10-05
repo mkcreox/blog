@@ -55,6 +55,12 @@ class Post
      */
     private $url;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="views", type="integer", options={"default" : 0})
+     */
+    private $views;
 
     /**
      * Get id
@@ -171,5 +177,23 @@ class Post
     {
         return $this->tags;
     }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+    }
+
+
 }
 
