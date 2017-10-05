@@ -9,6 +9,7 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -36,21 +37,20 @@ class PostController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-//            foreach ($request->request->get('post_form')['tags'] as $tagId) {
-//                $tag = $em->getRepository('AppBundle:Tag')->find($tagId);
-//                $post->addTag($tag);
-//                $em->persist($tag);
-//                $em->persist($post);
-//                $em->flush();
-//            }
-
-            $tag = $em->getRepository(Tag::class)->find(1);
-            $post->addTag($tag);
-            $em->persist($tag);
-            $em->persist($post);
-            $em->flush();
-
+            try {
+                foreach ($request->request->get('post_form')['tags'] as $tagId) {
+                    $em = $this->getDoctrine()->getManager();
+                    $tag = $em->getRepository(Tag::class)->find($tagId);
+                    $post->addTag($tag);
+                    $tag->addPost($post);
+                    $em->persist($tag);
+                    $em->persist($post);
+                    $em->flush();
+                }
+                $this->addFlash('notice', 'Post was created');
+            } catch (UniqueConstraintViolationException $exception) {
+                $this->addFlash('warning', 'Post was not created');
+            }
             return $this->redirectToRoute("admin_post");
         }
 
@@ -68,16 +68,28 @@ class PostController extends Controller
             ->getRepository(Post::class)
             ->find($id);
 
+        if (!$post) {
+            $this->addFlash('warning', 'Post is not exist');
+            return $this->redirectToRoute("admin_post");
+        }
+
         $form = $this->createForm(PostForm::class, $post);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($post);
-                $em->flush();
+                foreach ($request->request->get('post_form')['tags'] as $tagId) {
+                    $em = $this->getDoctrine()->getManager();
+                    $tag = $em->getRepository(Tag::class)->find($tagId);
+                    $post->addTag($tag);
+                    $tag->addPost($post);
+                    $em->persist($tag);
+                    $em->persist($post);
+                    $em->flush();
+                }
+                $this->addFlash('notice', 'Post was updated');
             } catch (UniqueConstraintViolationException $exception) {
-
+                $this->addFlash('warning', 'Post was not updated');
             }
             return $this->redirectToRoute("admin_post");
         }
@@ -88,16 +100,34 @@ class PostController extends Controller
     }
 
     /**
-     * @Route("/admin/post/setActive", name="admin_post_set_active")
+     * @Route("/admin/post/setActive", name="admin_set_active")
      */
-    public function setActiveAction($idPost)
-    {
-        $posts = $this->getDoctrine()
-            ->getRepository(Post::class)
-            ->findAll();
+    public function setActiveAction(Request $request){
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $post = $em->getRepository(Post::class)->find($request->request->get("post_id"));
+            $post->setIsActive($request->request->get("is_active"));
+            $em->persist($post);
+            $em->flush();
 
-        return $this->render('admin/post/index.html.twig', [
-            "posts" => $posts
-        ]);
+            $response = new Response(
+                'Content',
+                Response::HTTP_OK,
+                array('content-type' => 'text/html')
+            );
+
+            return $response->send();
+        } catch (UniqueConstraintViolationException $exception) {
+            $response = new Response(
+                'Content',
+                Response::HTTP_BAD_REQUEST,
+                array('content-type' => 'text/html')
+            );
+
+            return $response->send();
+        }
+
+
+
     }
 }

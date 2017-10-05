@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/admin.html.twig' %}
 
 {% block body %}
     <div class="container">
@@ -9,23 +9,26 @@
                 <div class="responsive-table">
                     <table>
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>NAME</th>
-                                <th>DATE</th>
-                                <th>IS ACTIVE</th>
-                                <th>ACTION</th>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>DATE</th>
+                            <th>IS ACTIVE</th>
+                            <th>ACTION</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {% for post in posts %}
                             <tr>
-                                <td>{{ post.id }}</td>
-                                <td>{{ post.title }}</td>
-                                <td>{{ post.date|date("m/d/Y") }}</td>
-                                <td><input type="checkbox" name="is_active" class="form-control" value="1" {{ post.isActive ? "checked" : "" }}></td>
+                                <td>{{ post.getId() }}</td>
+                                <td>{{ post.getTitle() }}</td>
+                                <td>{{ post.getDate()|date("m/d/Y") }}</td>
+                                <td><input type="checkbox" name="is_active" class="form-control"
+                                           data-post-id="{{ post.getId() }}" data-url="{{ path("admin_set_active") }}"
+                                           value="0" {{ post.getIsActive() ? "checked" : "" }}></td>
                                 <td>
-                                    <a href="{{ path('admin_post_edit', {'id': post.id}) }}"><span class="glyphicon glyphicon-pencil">Edit</span></a>
+                                    <a href="{{ path('admin_post_edit', {'id': post.getId()}) }}"><span
+                                                class="glyphicon glyphicon-pencil">Edit</span></a>
                                     {#<a href="{{ path("admin_post_set_active") }}"><span class="glyphicon glyphicon-remove">Trash</span></a>#}
                                 </td>
                             </tr>
@@ -40,6 +43,33 @@
 
 {% block javascripts %}
     <script>
+        jQuery(document).ready(function () {
+            jQuery("input[name='is_active']").on("change", function () {
+                setActive(this);
+            });
+        });
 
+        function setActive(self) {
+            var $self, postId, val = 0, url;
+            $self = jQuery(self);
+            postId = $self.data("post-id");
+            url = $self.data("url");
+
+            if ($self.is(":checked")) {
+                val = 1;
+            }
+
+            jQuery.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    is_active: val,
+                    post_id: postId
+                },
+                success: function () {
+                    window.location.reload();
+                }
+            })
+        }
     </script>
 {% endblock %}

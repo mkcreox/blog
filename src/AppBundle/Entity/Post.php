@@ -44,15 +44,8 @@ class Post
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts", cascade={"persist"})
-     * @ORM\JoinTable(name="post_tag",
-     *     joinColumns={
-     *     @ORM\JoinColumn(name="post_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="posts")
+     * @ORM\JoinTable(name="post_tag")
      */
     private $tags;
 
@@ -81,7 +74,6 @@ class Post
     public function __construct()
     {
         $this->date = new \DateTime();
-        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -215,33 +207,22 @@ class Post
     }
 
     /**
-     * Add tags
+     * Add tag
      *
-     * @param \AppBundle\Entity\Tag $tags
+     * @param \AppBundle\Entity\Tag $tag
      * @return Post
      */
-    public function addTag(Tag $tags)
+    public function addTag(Tag $tag)
     {
-        $tags->addPost($this);
-        $this->$tags[] = $tags;
+        $this->tags[] = $tag;
 
         return $this;
     }
 
     /**
-     * Remove tags
-     *
-     * @param \AppBundle\Entity\Tag $tags
-     */
-    public function removeTag(Tag $tags)
-    {
-        $this->$tags->removeElement($tags);
-    }
-
-    /**
      * Get tags
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return (targetEntity="Tag", inversedBy="posts")
      */
     public function getTags()
     {

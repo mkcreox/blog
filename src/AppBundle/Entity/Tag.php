@@ -104,16 +104,6 @@ class Tag
     }
 
     /**
-     * Remove posts
-     *
-     * @param \AppBundle\Entity\Post $posts
-     */
-    public function removePost(Post $posts)
-    {
-        $this->posts->removeElement($posts);
-    }
-
-    /**
      * Get posts
      *
      * @return \Doctrine\Common\Collections\Collection
