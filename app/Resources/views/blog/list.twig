@@ -2,15 +2,12 @@
 
 {% block body %}
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Homepage</a></li>
+        <li class="breadcrumb-item"><a href="{{ path("homepage") }}">Homepage</a></li>
         <li class="breadcrumb-item active">Blog list</li>
     </ol>
     <div class="wrapper" xmlns="http://www.w3.org/1999/html">
         <div class="container">
             <div id="welcome">
-                {% set currentPath = path(app.request.attributes.get('_route'),
-                app.request.attributes.get('_route_params')) %}
-
                 <h1>Blog list</h1>
                 <hr>
             </div>
@@ -20,7 +17,7 @@
                     <div class="col-md-4">
                         <h2>{{ post.getTitle() }}</h2>
                         <p><small class="pull-right">{{ post.getDate()|date("d.m.Y") }}</small></p>
-                        <p><a class="btn btn-secondary" href="{{ post.url }}">Read more...</a></p>
+                        <p><a class="btn btn-secondary" href="{{ path("detail", {"slug": post.url}) }}">Read more...</a></p>
                     </div>
                 {% endfor %}
             </div>

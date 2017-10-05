@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Event\PostWasDisplayedEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class BlogController extends Controller
         );
     }
     /**
-     * @Route("/{page}", name="list",requirements={"page": "\d+"})
+     * @Route("/{page_number}", name="list",requirements={"page_number": "\d+"})
      */
     public function indexAction($page = 1)
     {
@@ -52,6 +53,9 @@ class BlogController extends Controller
 
         $post =  $this->getDoctrine()->getRepository(Post::class)->findOneBy(["url"=>$slug]);
 
+        $event = new PostWasDisplayedEvent($post);
+        $dispatcher = $this->get('event_dispatcher');
+        $dispatcher->dispatch(PostWasDisplayedEvent::NAME, $event);
 
         return $this->render('blog/show.twig',
             [
