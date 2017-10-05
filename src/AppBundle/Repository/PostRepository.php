@@ -20,7 +20,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
 
     public function getPostsForREST()
     {
-        $query = $this->getEntityManager()->createQuery('SELECT NEW AppBundle\\DTO\\Rest\\SimplePost(p.id, p.title, p.date, p.url) FROM AppBundle\\Entity\\Post p');
+        $query = $this->getEntityManager()->createQuery('SELECT NEW AppBundle\\DTO\\Rest\\SimplePost(p.id, p.title, p.date, p.url, p.isActive, p.views) FROM AppBundle\\Entity\\Post p');
 
         return $query->getResult();
     }
@@ -38,7 +38,10 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             $post->getTitle(),
             $post->getText(),
             $post->getDate(),
-            $post->getUrl());
+            $post->getUrl(),
+            $post->getIsActive(),
+            $post->getViews()
+        );
 
         foreach ($post->getTags() as $tag) {
             $postDTO->tags[] = new Tag(

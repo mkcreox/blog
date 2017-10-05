@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Tag;
+use AppBundle\Repository\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -64,9 +65,6 @@ class PostForm extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'mapped' => false,
-                'choice_value' => function (Tag $entity = null) {
-                return $entity ? $entity->getId() : '';
-            },
                 'attr' => [
                     'class' => 'checkbox pull-left top-10-active',
                     'style' => 'margin-left: 5px'
