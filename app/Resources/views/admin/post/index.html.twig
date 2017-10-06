@@ -11,6 +11,7 @@
                             <th>ID</th>
                             <th>NAME</th>
                             <th>DATE</th>
+                            <th>VIEWS</th>
                             <th>IS ACTIVE</th>
                             <th>ACTION</th>
                         </tr>
@@ -21,6 +22,7 @@
                                 <td>{{ post.getId() }}</td>
                                 <td>{{ post.getTitle() }}</td>
                                 <td>{{ post.getDate()|date("m/d/Y") }}</td>
+                                <td>{{ post.getViews() }}</td>
                                 <td><input type="checkbox" name="is_active" class="form-control"
                                            data-post-id="{{ post.getId() }}" data-url="{{ path("admin_set_active") }}"
                                            value="0" {{ post.getIsActive() ? "checked" : "" }}></td>
