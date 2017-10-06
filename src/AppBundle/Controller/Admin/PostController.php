@@ -47,6 +47,11 @@ class PostController extends Controller
                         $em->persist($tag);
                     }
                 }
+
+                if ($post->getViews() === null) {
+                    $post->setViews(0);
+                }
+
                 $em->persist($post);
                 $em->flush();
 
