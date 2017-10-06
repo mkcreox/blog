@@ -66,7 +66,7 @@ class PostForm extends AbstractType
                 'expanded' => true,
                 'mapped' => false,
                 'attr' => [
-                    'class' => 'checkbox pull-left top-10-active',
+                    'class' => 'checkbox top-10-active',
                     'style' => 'margin-left: 5px'
                 ]
             ])
