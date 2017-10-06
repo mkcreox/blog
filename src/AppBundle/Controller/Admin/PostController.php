@@ -92,7 +92,6 @@ class PostController extends Controller
                 }
                 $em->persist($post);
                 $em->flush();
-                
                 $this->addFlash('notice', 'Post was updated');
             } catch (UniqueConstraintViolationException $exception) {
                 $this->addFlash('warning', 'Post was not updated');
