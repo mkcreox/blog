@@ -38,15 +38,18 @@ class PostController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                foreach ($request->request->get('post_form')['tags'] as $tagId) {
-                    $em = $this->getDoctrine()->getManager();
-                    $tag = $em->getRepository(Tag::class)->find($tagId);
-                    $post->addTag($tag);
-                    $tag->addPost($post);
-                    $em->persist($tag);
-                    $em->persist($post);
-                    $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                if (array_key_exists('tags', $request->request->get('post_form'))) {
+                    foreach ($request->request->get('post_form')['tags'] as $tagId) {
+                        $tag = $em->getRepository(Tag::class)->find($tagId);
+                        $post->addTag($tag);
+                        $tag->addPost($post);
+                        $em->persist($tag);
+                    }
                 }
+                $em->persist($post);
+                $em->flush();
+
                 $this->addFlash('notice', 'Post was created');
             } catch (UniqueConstraintViolationException $exception) {
                 $this->addFlash('warning', 'Post was not created');
@@ -78,15 +81,18 @@ class PostController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                foreach ($request->request->get('post_form')['tags'] as $tagId) {
-                    $em = $this->getDoctrine()->getManager();
-                    $tag = $em->getRepository(Tag::class)->find($tagId);
-                    $post->addTag($tag);
-                    $tag->addPost($post);
-                    $em->persist($tag);
-                    $em->persist($post);
-                    $em->flush();
+                $em = $this->getDoctrine()->getManager();
+                if (array_key_exists('tags', $request->request->get('post_form'))) {
+                    foreach ($request->request->get('post_form')['tags'] as $tagId) {
+                        $tag = $em->getRepository(Tag::class)->find($tagId);
+                        $post->addTag($tag);
+                        $tag->addPost($post);
+                        $em->persist($tag);
+                    }
                 }
+                $em->persist($post);
+                $em->flush();
+                
                 $this->addFlash('notice', 'Post was updated');
             } catch (UniqueConstraintViolationException $exception) {
                 $this->addFlash('warning', 'Post was not updated');
